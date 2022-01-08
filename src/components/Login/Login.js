@@ -11,9 +11,18 @@ const Login = props => {
   const [passwordIsValid, setPasswordIsValid] = useState()
   const [formIsValid, setFormIsValid] = useState(false)
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes('@') && enteredPassword.trim().length > 6
-    )
+    console.log('checking form validity')
+    //減少不斷發送request或執行函式
+    const identifier = setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      )
+    }, 500)
+    //清除setTimeout
+    return () => {
+      console.log('clean up')
+      clearTimeout(identifier)
+    }
   }, [enteredEmail, enteredPassword])
   //只有當dependencies中的值改變才會觸發(輸入的信箱、密碼改變時，才會觸發表單驗證)
   const emailChangeHandler = event => {
